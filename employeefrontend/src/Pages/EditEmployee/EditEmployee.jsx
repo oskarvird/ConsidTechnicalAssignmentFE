@@ -12,7 +12,7 @@ const EditEmployee = () => {
     rank: "",
     isCEO: false,
     isManager: false,
-    managerId: "",
+    managerId: null,
   });
 
   console.log(employee);
@@ -28,9 +28,15 @@ const EditEmployee = () => {
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
-    setEmployee((prevEmployee) => ({ ...prevEmployee, [name]: value }));
+
+    if (name === "managerId" && value === "") {
+      setEmployee((prevEmployee) => ({ ...prevEmployee, [name]: null }));
+    } else {
+      setEmployee((prevEmployee) => ({ ...prevEmployee, [name]: value }));
+    }
   };
 
+  console.log(employee);
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
@@ -51,12 +57,14 @@ const EditEmployee = () => {
         <label htmlFor="FirstName">First Name:</label>
         <input
           type="text"
-          id="FirstName"
+          id="firstName"
           name="firstName"
           defaultValue={employee.firstName}
           onChange={handleChange}
           required
           className="form-control"
+          pattern="[A-Za-z]+"
+          title="Please enter only alphabetical characters"
         />
         {errors.FirstName && <div>{errors.FirstName}</div>}
       </div>
@@ -64,16 +72,18 @@ const EditEmployee = () => {
         <label htmlFor="LastName">Last Name:</label>
         <input
           type="text"
-          id="LastName"
+          id="lastName"
           name="lastName"
           defaultValue={employee.lastName}
           onChange={handleChange}
           required
           className="form-control"
+          pattern="[A-Za-z]+"
+          title="Please enter only alphabetical characters"
         />
         {errors.LastName && <div>{errors.LastName}</div>}
       </div>
-      <div className="form-group w-25 mt-2">
+      <div className="form-group mt-2">
         <label htmlFor="rank">Rank:</label>
         <input
           type="number"
@@ -84,7 +94,7 @@ const EditEmployee = () => {
           min="1"
           max="10"
           required
-          className="form-control"
+          className="form-control  w-50"
         />
         {errors.rank && <p className="text-danger">{errors.rank}</p>}
       </div>
@@ -92,7 +102,7 @@ const EditEmployee = () => {
         <label htmlFor="IsCEO">Is CEO:</label>
         <input
           type="checkbox"
-          id="IsCEO"
+          id="isCEO"
           name="isCEO"
           checked={employee.isCEO}
           onChange={handleChange}
@@ -103,7 +113,7 @@ const EditEmployee = () => {
         <label htmlFor="IsManager">Is Manager:</label>
         <input
           type="checkbox"
-          id="IsManager"
+          id="isManager"
           name="isManager"
           checked={employee.isManager}
           onChange={handleChange}
@@ -113,12 +123,13 @@ const EditEmployee = () => {
       <div className="form-group mt-2">
         <label htmlFor="ManagerId">Manager ID:</label>
         <input
-          type="text"
-          id="ManagerId"
+          type="number"
+          id="managerId"
           name="managerId"
-          defaultValue={employee.managerId}
+          min="1"
+          value={employee.managerId === null ? "" : employee.managerId}
           onChange={handleChange}
-          className="form-control"
+          className="form-control  w-50"
         />
         {errors.ManagerId && <div>{errors.ManagerId}</div>}
       </div>

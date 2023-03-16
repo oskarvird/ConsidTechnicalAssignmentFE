@@ -43,7 +43,6 @@ const NewEmployee = () => {
         .post("http://localhost:5077/api/employees/create", formData)
         .then((response) => {
           console.log(response.data);
-          // reset form data after successful submission
           setFormData({
             firstName: "",
             lastName: "",
@@ -73,6 +72,8 @@ const NewEmployee = () => {
           onChange={handleInputChange}
           required
           className="form-control"
+          pattern="[A-Za-z]+"
+          title="Please enter only alphabetical characters"
         />
         {errors.firstName && <p className="text-danger">{errors.firstName}</p>}
       </div>
@@ -87,11 +88,13 @@ const NewEmployee = () => {
           onChange={handleInputChange}
           required
           className="form-control"
+          pattern="[A-Za-z]+"
+          title="Please enter only alphabetical characters"
         />
         {errors.lastName && <p className="text-danger">{errors.lastName}</p>}
       </div>
 
-      <div className="form-group w-25 mt-2">
+      <div className="form-group mt-2">
         <label htmlFor="rank">Rank:</label>
         <input
           type="number"
@@ -102,7 +105,7 @@ const NewEmployee = () => {
           min="1"
           max="10"
           required
-          className="form-control"
+          className="form-control  w-50"
         />
         {errors.rank && <p className="text-danger">{errors.rank}</p>}
       </div>
@@ -134,15 +137,16 @@ const NewEmployee = () => {
         </label>
       </div>
 
-      <div className="form-group w-25 mt-2">
+      <div className="form-group mt-2">
         <label htmlFor="managerId">Manager ID:</label>
         <input
           type="number"
           id="managerId"
           name="managerId"
+          min="1"
           value={formData.managerId}
           onChange={handleInputChange}
-          className="form-control"
+          className="form-control w-50"
         />
       </div>
 
